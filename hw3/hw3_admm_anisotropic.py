@@ -37,13 +37,31 @@ def compute_Q(dim):
 	return scipy.sparse.vstack([D_x,D_y])
 
 def update_x(z,y,rho,f,Q,lmbda):
-	## FILL IN
+	# Get matrix M and vector b in Mx = b
+	M = scipy.sparse.eye(Q.shape[1]) + rho * Q.T @ Q
+	b = f + Q.T @ (rho * z - y)
+	x = scipy.sparse.linalg.spsolve(M,b)
+	return x
 
 def update_z(x,y,rho,Q,lmbda):
-	## FILL IN
+	condition_vec = y / rho + Q @ x
+
+	# initialize z
+	z = numpy.zeros(Q.shape[0])
+
+	# Index of elements for soft thresholding
+	upper = numpy.where(condition_vec > lmbda / rho)
+	lower = numpy.where(condition_vec < - lmbda / rho)
+
+	# adjust elements of z
+	z[upper] = condition_vec[upper] - lmbda / rho
+	z[lower] = condition_vec[lower] + lmbda / rho
+
+	return z
 
 def update_y(x,y,z,rho,Q,lmbda):
-	## FILL IN
+	y = y + rho * (Q @ x - z)
+	return y
 
 def compute_tv_admm(im,lmbda,rho):
 	dim=im.shape
@@ -59,7 +77,6 @@ def compute_tv_admm(im,lmbda,rho):
 	count=1
 	while True:
 		z_last=z.copy()
-
 		x=update_x(z,y,rho,im_copy,Q,lmbda)
 		z=update_z(x,y,rho,Q,lmbda)
 		y=update_y(x,y,z,rho,Q,lmbda)

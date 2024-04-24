@@ -8,13 +8,31 @@ import math
 import matplotlib.pyplot as plt
 
 def update_x(z,y,rho,f,A,lmbda):
-	## FILL IN
+	# Get matrix M and vector b in Mx = b
+	M = A.T @ A + rho * numpy.eye(A.shape[1])
+	b = A.T @ f + rho * z - y
+	x = scipy.linalg.solve(M,b)
+	return x
 
 def update_z(x,y,rho,lmbda):
-	## FILL IN
+	condition_vec = x + y / rho
+
+	# initialize z
+	z = numpy.zeros(x.shape)
+
+	# Index of elements for soft thresholding
+	upper = numpy.where(condition_vec > lmbda / rho)
+	lower = numpy.where(condition_vec < - lmbda / rho)
+
+	# adjust elements of z
+	z[upper] = condition_vec[upper] - lmbda / rho
+	z[lower] = condition_vec[lower] + lmbda / rho
+
+	return z
 
 def update_y(x,y,z,rho,lmbda):
-	## FILL IN
+	y = y + rho * (x - z)
+	return y
 
 def compute_admm_lasso(f,A,lmbda,rho):
 	dim=A.shape
@@ -45,8 +63,9 @@ def compute_admm_lasso(f,A,lmbda,rho):
 
 def main():
 	# Generate ``noisy'' data.
-	x0=numpy.linspace(0,10,10)
+	x0=numpy.linspace(0,10,15)
 	f=2/25*x0*(x0-5)*(x0-10)+numpy.random.uniform(-0.375,0.375,x0.shape)
+	f = -0.5*(x0-2)**3 + (x0-2)**2 + 2.5*(x0-2) + numpy.random.uniform(-0.375,0.375,x0.shape)
 
 	# Assemble matrix for polynomial regression.
 	degree=10
