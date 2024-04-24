@@ -61,7 +61,7 @@ def compute_tv_chambolle(im,lmbda,tau=1/8,p0=None,tol=1/100):
 		step=compute_gradient(divp-(1/lmbda)*f)
 
 		## FILL IN BELOW (you may use more than one line, of course)
-		p=
+		p = (p_last + tau * step) / (1 + tau * numpy.abs(step))
 	
 		stopping_criteria=numpy.amax(numpy.abs((p-p_last).reshape(p.size,1)))
 		print(count,": stopping_criteria=",stopping_criteria)
@@ -76,13 +76,15 @@ def compute_tv_chambolle(im,lmbda,tau=1/8,p0=None,tol=1/100):
 	return im_smoothed
 
 def main():
-	im_input=read_image('5.1.12.tiff') 
+	im_input=read_image('5.1.12.tiff')
+	im_input=read_image('5.2.10.tiff')
+
 
 	im=skimage.util.img_as_ubyte(im_input)
 
 	plt.figure()
 	plt.subplot(1,3,1)
-	plt.title('Original Clock')
+	plt.title('Original Image')
 	display_image(im,'bw')
 
 	im_noisy=skimage.util.img_as_ubyte(im.copy())
@@ -94,7 +96,7 @@ def main():
 	im_noisy=im_noisy.astype('uint8')
 
 	plt.subplot(1,3,2)
-	plt.title('Noisy Clock')
+	plt.title('Noisy Image')
 	display_image(im_noisy,'bw')
 
 	im_smoothed=compute_tv_chambolle(im_noisy,15,tol=1/1000)
