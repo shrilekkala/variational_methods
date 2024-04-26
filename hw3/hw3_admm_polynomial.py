@@ -63,10 +63,11 @@ def compute_admm_lasso(f,A,lmbda,rho):
 
 def main():
 	# Generate ``noisy'' data.
-	x0=numpy.linspace(0,10,15)
+	x0=numpy.linspace(0,10,10)
 	f=2/25*x0*(x0-5)*(x0-10)+numpy.random.uniform(-0.375,0.375,x0.shape)
-	# f = -0.5*(x0-2)**3 + (x0-2)**2 + 2.5*(x0-2) + numpy.random.uniform(-0.375,0.375,x0.shape)
-	f = numpy.sin(x0) + numpy.random.uniform(-0.375,0.375,x0.shape)
+
+	# # Noisy sine curve
+	# f = numpy.sin(x0) + numpy.random.uniform(-0.375,0.375,x0.shape)
 
 	# Assemble matrix for polynomial regression.
 	degree=10
