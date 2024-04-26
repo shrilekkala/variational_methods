@@ -77,8 +77,7 @@ def compute_tv_chambolle(im,lmbda,tau=1/8,p0=None,tol=1/100):
 
 def main():
 	im_input=read_image('5.1.12.tiff')
-	im_input=read_image('5.2.10.tiff')
-
+	# im_input=read_image('5.2.10.tiff')
 
 	im=skimage.util.img_as_ubyte(im_input)
 
@@ -99,7 +98,7 @@ def main():
 	plt.title('Noisy Image')
 	display_image(im_noisy,'bw')
 
-	im_smoothed=compute_tv_chambolle(im_noisy,15,tol=1/1000)
+	im_smoothed=compute_tv_chambolle(im_noisy,5,tol=1/1000)
 	
 	plt.subplot(1,3,3)
 	plt.title('ROF - Chambolle (dual problem)')
@@ -109,3 +108,36 @@ def main():
 
 if __name__=="__main__":
 	main()
+
+
+im_input=read_image('hw3/5.1.12.tiff')
+im=skimage.util.img_as_ubyte(im_input)
+
+plt.figure()
+plt.subplot(2, 3, 1)
+plt.title('Original Image')
+display_image(im,'bw')
+
+im_noisy=skimage.util.img_as_ubyte(im.copy())
+noise=scipy.stats.norm.rvs(size=im_noisy.size,
+	scale=math.sqrt(0.005)*255).astype('int16')
+im_noisy=im_noisy.astype('int16')+numpy.reshape(noise,im_noisy.shape)
+im_noisy=numpy.maximum(im_noisy,numpy.zeros(im_noisy.shape))
+im_noisy=numpy.minimum(im_noisy,255*numpy.ones(im_noisy.shape))
+im_noisy=im_noisy.astype('uint8')
+
+plt.subplot(2, 3, 2)
+plt.title('Noisy Image')
+display_image(im_noisy,'bw')
+plt.show()
+
+lambda_list = [1, 5, 10, 20]
+
+for i in range(4):
+	im_smoothed = compute_tv_chambolle(im_noisy, lambda_list[i], tol=1 / 1000)
+
+	plt.subplot(2, 3, i+3)
+	plt.title(f'lambda = {lambda_list[i]}')
+	display_image(im_smoothed, 'bw')
+
+plt.show()

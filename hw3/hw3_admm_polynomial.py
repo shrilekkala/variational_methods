@@ -65,7 +65,8 @@ def main():
 	# Generate ``noisy'' data.
 	x0=numpy.linspace(0,10,15)
 	f=2/25*x0*(x0-5)*(x0-10)+numpy.random.uniform(-0.375,0.375,x0.shape)
-	f = -0.5*(x0-2)**3 + (x0-2)**2 + 2.5*(x0-2) + numpy.random.uniform(-0.375,0.375,x0.shape)
+	# f = -0.5*(x0-2)**3 + (x0-2)**2 + 2.5*(x0-2) + numpy.random.uniform(-0.375,0.375,x0.shape)
+	f = numpy.sin(x0) + numpy.random.uniform(-0.375,0.375,x0.shape)
 
 	# Assemble matrix for polynomial regression.
 	degree=10
@@ -87,7 +88,7 @@ def main():
 	plt.plot(x0,f,'.')
 	plt.plot(x1,poly_y)
 
-	lasso_poly_regression=compute_admm_lasso(f,A,0.12,.10)
+	lasso_poly_regression=compute_admm_lasso(f,A,0.25,.10)
 	lasso_y=numpy.matmul(B,lasso_poly_regression)
 
 	plt.subplot(1,2,2)
