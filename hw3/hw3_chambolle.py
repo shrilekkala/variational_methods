@@ -61,7 +61,7 @@ def compute_tv_chambolle(im,lmbda,tau=1/8,p0=None,tol=1/100):
 		step=compute_gradient(divp-(1/lmbda)*f)
 
 		## FILL IN BELOW (you may use more than one line, of course)
-		p = (p_last + tau * step) / (1 + tau * numpy.abs(step))
+		p = (p_last + tau * step) / (1 + tau * numpy.linalg.norm(step, axis=2, keepdims=True))
 	
 		stopping_criteria=numpy.amax(numpy.abs((p-p_last).reshape(p.size,1)))
 		print(count,": stopping_criteria=",stopping_criteria)
