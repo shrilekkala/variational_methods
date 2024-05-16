@@ -34,8 +34,9 @@ def admm_solve(f, lmbda, rho, n_iter=100):
 
 def run_experiment(n, lmbda, rho):
     x = np.linspace(0, 1, n)
-    # f = 125 + 100 * np.sin(5 * x)
-    f = 125 + 100 * scipy.signal.square(np.sin(5*x))
+
+    # f = 125 + 100 * scipy.signal.square(np.sin(5*x))
+    f = 125 + 100 * np.sin(5 * x)
 
     # indices, starting from 1 to avoid division by zero
     indices = np.arange(1, n + 1)
