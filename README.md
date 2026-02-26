@@ -4,8 +4,8 @@ This repository contains a final reading project for a Variational Methods / Opt
 Topic: **convergence behavior of the direct extension of ADMM to multi-block (3+ block) convex minimization**.
 
 **Final deliverables**
-- **Report (PDF):** `[Final Project/ADMM Report.pdf]((Final%20Project/ADMM%20Report.pdf)`
-- **Slides (PDF):** `[Final Project/ADMM_Presentation.pdf](Final%20Project/ADMM_Presentation.pdf)`
+- **Report (PDF):** [ADMM Report.pdf](Final%20Project/ADMM%20Report.pdf)
+- **Slides (PDF):** [ADMM_Presentation.pdf](Final%20Project/ADMM_Presentation.pdf)
 
 ---
 
